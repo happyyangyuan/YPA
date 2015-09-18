@@ -1,5 +1,5 @@
 # YPA
-This is simply an extension of JPA usage which helps us to create reusable condition query.I name it YPA, short cut for YY'JPA.
+This is simply an extension of JPA usage which helps us to create reusable condition query.I name it 'YPA', short for Yy JPA extention.
 
 Once upon a time I was used to the JPA criteria query, only to find that it is rather boring to write repeated query method for every different query condition.
 Even worse, every time you want to extend the query method with one or more named parameters,you would find that it is barely possible to make it done without
