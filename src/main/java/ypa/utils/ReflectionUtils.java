@@ -14,9 +14,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyReflectionUtils {
+public class ReflectionUtils {
 
-    private static Logger log = LoggerFactory.getLogger(MyReflectionUtils.class);
+    private static Logger log = LoggerFactory.getLogger(ReflectionUtils.class);
 
     /**
      * @param condition

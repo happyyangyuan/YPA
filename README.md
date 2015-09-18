@@ -9,7 +9,7 @@ With YPA, you don't need to use JPA criteria query anymore, and you don't need t
 condition class for all the queries under certain JPA entity.
 You just add properties in your
 query condition class for common query scenes without polluting the former query.
-I'll describe the
+
 
 ##Example usage
 

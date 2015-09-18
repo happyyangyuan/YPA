@@ -14,7 +14,7 @@ import javax.persistence.Query;
 import java.lang.reflect.Field;
 import java.util.*;
 
-import static ypa.utils.MyReflectionUtils.getPropertyValue;
+import static ypa.utils.ReflectionUtils.getPropertyValue;
 
 /**
  * jpql工具类

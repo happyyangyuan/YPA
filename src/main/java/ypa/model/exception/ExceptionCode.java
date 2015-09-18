@@ -1,8 +1,15 @@
 package ypa.model.exception;
 
-public class ExceptionCode {
+import java.io.Serializable;
 
-    /**
+public class ExceptionCode implements Serializable{
+
+	/**
+	 * 致命异常
+	 */
+	public static String FATAL_ERROR = "999999_FATAL_ERROR";
+
+	/**
 	 * 持久层异常：0
 	 */
 	public static String DAO_ERR = "0_DAO_ERROR";
@@ -103,12 +110,6 @@ public class ExceptionCode {
 	 * IO EXCEPTION : 20
 	 */
 	public static final String IO_EXCEPTION = "20_IO_EXCEPTION";
-
-	/**
-	 * 致命异常
-	 */
-	public static String FATAL_ERROR = "999999_FATAL_ERROR";
-
 
 	/**
 	 * 持久单元名称错误 21
