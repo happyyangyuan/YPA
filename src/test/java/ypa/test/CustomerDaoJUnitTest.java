@@ -1,8 +1,13 @@
 package ypa.test;
 
 
+import org.junit.Test;
 import ypa.common.IJpaDao;
 import ypa.dao.customer.CustomerDao;
+import ypa.model.customer.Customer;
+import ypa.model.customer.CustomerCondition;
+
+import java.util.List;
 
 /**
  * This is unit test for customerDao
@@ -21,5 +26,10 @@ public class CustomerDaoJUnitTest extends AbstractDaoJUnitTest{
     @Override
     String getPersistenceUnitName() {
         return "test";
+    }
+
+    @Test
+    public void test(){
+        List<Customer> cs = customerDao.query(Customer.class, new CustomerCondition().setId(1L));
     }
 }

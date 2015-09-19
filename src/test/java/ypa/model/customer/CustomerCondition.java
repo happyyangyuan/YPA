@@ -19,16 +19,18 @@ public class CustomerCondition implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
+    public CustomerCondition setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public CustomerCondition setName(String name) {
         this.name = JpqlUtils.addFuzzyness(name);
+        return this;
     }
 
     public String getPhone() {
