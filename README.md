@@ -21,18 +21,75 @@ The condition class is highly resuable,extensiable and flexiable.
 
 ##Example usage
 Entity class:
-`    @Entity
-    public class Customer extends Serializable{
-    	private String code;
-    	private String name;
-    	private String fullNameInChinese;
-    	private String fullNameInEnglish;
-    	private String phone;
-    	private String address;
-    	private String postCode;
-    	private String fax;
-    	private String contactMan;
-    	private String email;
+```
+@Entity
+public class Customer extends Serializable{
+    private Long id;
+	private String code;
+	private String name;
+	private String phone;
+	private String address;
+	private String postCode;
+	private String fax;
+	private String contactMan;
+	private String email;
     ...
+}
+```
+
+Condition class:
+```
+public class CustomerCondition implements Serializable {
+    private Long id;
+    @DirectJPQL(jpqlFragments = "{alias}.name like :name")
+    private String name;
+    private String phone;
+    public Long getId() {
+        return id;
     }
-`
+    public CustomerCondition setId(Long id) {
+        this.id = id;
+        return this;
+    }
+    public String getName() {
+        return name;
+    }
+    public CustomerCondition setName(String name) {
+        this.name = JpqlUtils.addFuzzyness(name);
+        return this;
+    }
+    public String getPhone() {
+        return phone;
+    }
+    public CustomerCondition setPhone(String phone) {
+        this.phone = phone;
+        return this;
+    }
+}
+```
+DAO class:
+```
+public class CustomerDao extends AbstractJpaDao implements ICustomerDao {
+    public List<Customer> queryCustomers(CustomerCondition condition) {
+        return query(Customer.class,condition);
+    }
+}
+```
+Test:
+```
+public class CustomerDaoJUnitTest extends AbstractDaoJUnitTest{
+
+    private ICustomerDao customerDao;
+    
+    @Test
+    public void test(){
+        List<Customer> cs = customerDao.query(
+            Customer.class, 
+            new CustomerCondition()
+                .setName("Joe")
+                .setPhone('911')
+        );
+    }
+    ...
+}
+```
