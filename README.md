@@ -42,7 +42,6 @@ Condition class:
 ```
 public class CustomerCondition implements Serializable {
     private Long id;
-    @DirectJPQL(jpqlFragments = "{alias}.name like :name")
     private String name;
     private String phone;
     public Long getId() {
@@ -56,7 +55,7 @@ public class CustomerCondition implements Serializable {
         return name;
     }
     public CustomerCondition setName(String name) {
-        this.name = JpqlUtils.addFuzzyness(name);
+        this.name = name;
         return this;
     }
     public String getPhone() {
@@ -84,13 +83,16 @@ public class CustomerDaoJUnitTest extends AbstractDaoJUnitTest{
     
     @Test
     public void test(){
-        List<Customer> cs = customerDao.query(
+        List<Customer> cs1 = customerDao.query(
             Customer.class, 
             new CustomerCondition()
                 .setName("Joe")
                 .setPhone('911')
         );
+        List<Customer> cs2 = customerDao.query(Customer.class, null);
     }
     ...
 }
 ```
+Let's take a look at the condition class.Properties in it have the same name to the entity's.This is the simplest way to tell YPA we want perfect match with the db.The condition query follows the principle of "null to query all" and "null to ignore".
+Of cause,if you want to run the unit test,you have to provide your persistence.xml and the datasource with table 'customer'.
