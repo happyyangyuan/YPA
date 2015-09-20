@@ -83,16 +83,20 @@ public class CustomerDaoJUnitTest extends AbstractDaoJUnitTest{
     
     @Test
     public void test(){
+    	//query customers whos name equals "Joe" and phone equals "911",both conditions should be perfect matched.
         List<Customer> cs1 = customerDao.query(
             Customer.class, 
             new CustomerCondition()
                 .setName("Joe")
                 .setPhone('911')
         );
+        //query all the customers in the customer table.
         List<Customer> cs2 = customerDao.query(Customer.class, null);
     }
     ...
 }
 ```
 Let's take a look at the condition class.Properties in it have the same name to the entity's.This is the simplest way to tell YPA we want perfect match with the db.The condition query follows the principle of "null to query all" and "null to ignore".
-Of cause,if you want to run the unit test,you have to provide your persistence.xml and the datasource with table 'customer'.
+If you want to run the unit test,you have to provide your persistence.xml and the datasource with table 'customer'.
+
+More powerfull queries will be discribed later. Coming soon...
