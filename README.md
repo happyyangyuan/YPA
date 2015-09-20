@@ -21,7 +21,7 @@ The condition class is highly resuable,extensiable and flexiable.
 
 ##Example usage
 Entity class:
-    @Entity
+`    @Entity
     public class Customer extends Serializable{
     	private String code;
     	private String name;
@@ -35,3 +35,4 @@ Entity class:
     	private String email;
     ...
     }
+`
