@@ -24,7 +24,8 @@ Entity class:
 ```
 @Entity
 public class Customer extends Serializable{
-    private Long id;
+	@Id
+	private Long id;
 	private String code;
 	private String name;
 	private String phone;
