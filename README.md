@@ -20,5 +20,18 @@ With YPA, you don't need to use JPA criteria query anymore, you don't need to wr
 The condition class is highly resuable,extensiable and flexiable.
 
 ##Example usage
-
-Coming soon...
+Entity class:
+    @Entity
+    public class Customer extends Serializable{
+    	private String code;
+    	private String name;
+    	private String fullNameInChinese;
+    	private String fullNameInEnglish;
+    	private String phone;
+    	private String address;
+    	private String postCode;
+    	private String fax;
+    	private String contactMan;
+    	private String email;
+    ...
+    }
