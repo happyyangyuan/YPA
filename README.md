@@ -6,7 +6,7 @@ YPA helps you simplify your DAO code a lot. In fact you need to write only 3 cla
 * A condition class: it holds all the query conditions as properties in it.
 * A DAO class exends AbstractYpaDao.
 
-##Advantage of YPA
+##Advantages of YPA
 1. The CRUD methods in YPA DAO is strongly resuable and extensiable.
 2. Safe to extend without polluting the former CRUD especially the 'R'(the query).
 3. Very flexiable,by now it can meet all my needs in my business projects.
