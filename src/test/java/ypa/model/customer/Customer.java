@@ -21,10 +21,6 @@ public class Customer {
 	 * 中文地址
 	 */
 	private String address;
-	/**
-	 * 英文地址
-	 */
-	private String addressInEnglish;
 
 	private String postCode;
 
@@ -120,14 +116,6 @@ public class Customer {
 
 	public void setIcbLicensePath(String icbLicensePath) {
 		this.icbLicensePath = icbLicensePath;
-	}
-
-	public String getAddressInEnglish() {
-		return addressInEnglish;
-	}
-
-	public void setAddressInEnglish(String addressInEnglish) {
-		this.addressInEnglish = addressInEnglish;
 	}
 
 }
