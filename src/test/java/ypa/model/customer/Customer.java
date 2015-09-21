@@ -14,10 +14,6 @@ public class Customer {
 	private String code;
 
 	private String name;
-	
-	private String fullNameInChinese;
-	
-	private String fullNameInEnglish;
 
 	private String phone;
 
@@ -124,22 +120,6 @@ public class Customer {
 
 	public void setIcbLicensePath(String icbLicensePath) {
 		this.icbLicensePath = icbLicensePath;
-	}
-
-	public String getFullNameInChinese() {
-		return fullNameInChinese;
-	}
-
-	public void setFullNameInChinese(String fullNameInChinese) {
-		this.fullNameInChinese = fullNameInChinese;
-	}
-
-	public String getFullNameInEnglish() {
-		return fullNameInEnglish;
-	}
-
-	public void setFullNameInEnglish(String fullNameInEnglish) {
-		this.fullNameInEnglish = fullNameInEnglish;
 	}
 
 	public String getAddressInEnglish() {
