@@ -45,27 +45,7 @@ public class CustomerCondition implements Serializable {
     private Long id;
     private String name;
     private String phone;
-    public Long getId() {
-        return id;
-    }
-    public CustomerCondition setId(Long id) {
-        this.id = id;
-        return this;
-    }
-    public String getName() {
-        return name;
-    }
-    public CustomerCondition setName(String name) {
-        this.name = name;
-        return this;
-    }
-    public String getPhone() {
-        return phone;
-    }
-    public CustomerCondition setPhone(String phone) {
-        this.phone = phone;
-        return this;
-    }
+    //getters and setters ignored here ...
 }
 ```
 DAO class:
@@ -78,18 +58,14 @@ public class CustomerDao extends AbstractJpaDao implements ICustomerDao {
 ```
 Test:
 ```
-public class CustomerDaoJUnitTest extends AbstractDaoJUnitTest{
-
-    private ICustomerDao customerDao;
-    
+public class CustomerDaoJUnitTest ...{
+    //properties ignored ...
     @Test
     public void test(){
     	//query customers whos name equals "Joe" and phone equals "911",both conditions should be perfect matched.
         List<Customer> cs1 = customerDao.query(
             Customer.class, 
-            new CustomerCondition()
-                .setName("Joe")
-                .setPhone('911')
+            new CustomerCondition().setName("Joe").setPhone('911')
         );
         //query all the customers in the customer table.
         List<Customer> cs2 = customerDao.query(Customer.class, null);
@@ -113,11 +89,11 @@ public class CustomerCondition_fuzzyName implements Serializable {
 ...
 }
 ```
-Dao class:```The same as CustomerDao```  
+Dao class:
+```The same as CustomerDao```  
 Test class:
 ```
 public class CustomerDaoTest1 extends AbstractDaoJUnitTest{
-
     @Test
     public void test(){
         //query customers whos name contains "Yang".Please refer to class CustomerCondition_fuzzyName's name property for jpql detail.
@@ -127,5 +103,10 @@ public class CustomerDaoTest1 extends AbstractDaoJUnitTest{
     ...
 }
 ```
-
+Please take a look at the annotation on class CustomerCondition_fuzzyName's name property:
+```@DirectJPQL(jpqlFragments = "{alias}.name like :name") private String name;```
+* The```@DirectJPQL``` annotation:it tells YPA that if name is not empty string or null, the like jpql fragment shall placed in the where clause to make a like query;
+* ```{alias}```: represents the entity class;
+* ```:name```: is the named parameter;
+* The final JPQL: ```select alias from Customer as alias where alias.name like :name```.
 More powerfull queries will be discribed later. Coming soon...
