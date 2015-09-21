@@ -20,7 +20,7 @@ The condition class is highly resuable,extensiable and flexiable.
 
 ##Example usage
 ###Example 1 : basic query for customers.
-Asumme we get a table "customer" in the database.Belowe is an simple dao structure:  entity + condition + dao.
+Asumme we get a table "customer" in the database.Belowe is an simple dao structure:  entity + condition + dao.  
 Entity class:
 ```
 @Entity
@@ -38,7 +38,6 @@ public class Customer extends Serializable{
     ...
 }
 ```
-
 Condition class:
 ```
 public class CustomerCondition implements Serializable {
@@ -75,9 +74,8 @@ public class CustomerDaoJUnitTest ...{
 ```
 Let's take a look at the condition class.Properties in it have the same name to the entity's.This is the simplest way to tell YPA we want perfect match with the db.The condition query follows the principle of "null to query all" and "null to ignore".
 If you want to run the unit test,you have to provide your persistence.xml and the datasource with table 'customer'.
-
 ###Example 2 : a simple fuzzy query (like query)
-Entity class :
+Entity class :  
 ``` The same as above```  
 Condition class:
 ```
@@ -89,7 +87,7 @@ public class CustomerCondition_fuzzyName implements Serializable {
 ...
 }
 ```
-Dao class:
+Dao class:  
 ```The same as CustomerDao```  
 Test class:
 ```
@@ -108,5 +106,5 @@ Please take a look at the annotation on class CustomerCondition_fuzzyName's name
 * The```@DirectJPQL``` annotation:it tells YPA that if name is not empty string or null, the like jpql fragment shall placed in the where clause to make a like query;
 * ```{alias}```: represents the entity class;
 * ```:name```: is the named parameter;
-* The final JPQL: ```select alias from Customer as alias where alias.name like :name```.
+* The final JPQL: ```select alias from Customer as alias where alias.name like :name```.  
 More powerfull queries will be discribed later. Coming soon...
