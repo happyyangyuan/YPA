@@ -7,13 +7,11 @@ import ypa.utils.JpqlUtils;
 import java.io.Serializable;
 
 public class CustomerCondition implements Serializable {
-
     private Long id;
-
-    @DirectJPQL(jpqlFragments = "{alias}.name like :name or {alias}.fullNameInChinese like :name or  {alias}.fullNameInEnglish like :name")
+    @DirectJPQL(jpqlFragments = "{alias}.name like :name")
     private String name;
-
     private String phone;
+    private String any;
 
     public Long getId() {
         return id;
@@ -40,5 +38,13 @@ public class CustomerCondition implements Serializable {
     public CustomerCondition setPhone(String phone) {
         this.phone = phone;
         return this;
+    }
+
+    public String getAny() {
+        return any;
+    }
+
+    public void setAny(String any) {
+        this.any = any;
     }
 }

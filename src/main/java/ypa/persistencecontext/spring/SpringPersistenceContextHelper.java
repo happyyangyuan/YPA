@@ -2,6 +2,9 @@ package ypa.persistencecontext.spring;
 
 import ypa.persistencecontext.IPersistenceContextHelper;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 /**
  * Spring framework supports @PersitenceContext/@PersistenceUnit annotation to inject entityManager(transaction/extended).
  * If you use spring, extend this class to provide the entity manager.
@@ -10,6 +13,10 @@ import ypa.persistencecontext.IPersistenceContextHelper;
  * Created by happyyangyuan on 15/9/17.
  */
 public abstract class SpringPersistenceContextHelper implements IPersistenceContextHelper {
+
+
+    @PersistenceContext
+    private EntityManager em;
 
 
 }

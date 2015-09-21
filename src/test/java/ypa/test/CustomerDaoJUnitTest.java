@@ -31,5 +31,6 @@ public class CustomerDaoJUnitTest extends AbstractDaoJUnitTest{
     @Test
     public void test(){
         List<Customer> cs = customerDao.query(Customer.class, new CustomerCondition().setId(1L));
+        List<Customer> cs1 = customerDao.queryCustomers(Customer.class,new CustomerCondition());
     }
 }
