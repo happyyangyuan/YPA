@@ -1,7 +1,6 @@
 # YPA
 ##What is YPA?
-YPA is a simple extension of JPA. It helps us create reusable conditional query.
-YPA helps you simplify your DAO code a lot. In fact you need to write only 3 classes to fulfill a powerfull DAO:
+YPA is a simple extension of JPA. It helps you to create reusable conditional queries,to simplify your DAO code a lot. In fact you need to write only 3 classes to fulfill a powerfull DAO:
 * An entity class: entity class is always a must for JPA.
 * A condition class: it holds all the query conditions as properties in it.
 * A DAO class exends AbstractYpaDao.
