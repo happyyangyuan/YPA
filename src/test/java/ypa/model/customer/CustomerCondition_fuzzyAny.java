@@ -8,9 +8,15 @@ import java.io.Serializable;
 /**
  * Created by happyyangyuan on 15/9/21.
  */
-public class CustomerCondition_fuzzyAny implements Serializable{
+public class CustomerCondition_fuzzyAny implements Serializable {
 
-    @DirectJPQL(jpqlFragments = "{alias}.name like :any or {alias}.address like :any or {alias}.phone like :any")
+    @DirectJPQL(
+            jpqlFragments = "{alias}.code like :any " +
+                    "or {alias}.name like :any " +
+                    "or {alias}.address like :any " +
+                    "or {alias}.phone like :any"+
+                    "or {alias}.postCode like :any"
+    )
     private String any;
 
     public String getAny() {
