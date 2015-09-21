@@ -76,7 +76,9 @@ Let's take a look at the condition class.Properties in it have the same name to 
 If you want to run the unit test,you have to provide your persistence.xml and the datasource with table 'customer'.
 ###Example 2 : a simple fuzzy query (like query)
 Entity class :  
-``` The same as above```  
+```
+The same as above
+```  
 Condition class:
 ```
 public class CustomerCondition_fuzzyName implements Serializable {
@@ -88,7 +90,9 @@ public class CustomerCondition_fuzzyName implements Serializable {
 }
 ```
 Dao class:  
-```The same as CustomerDao```  
+```
+The same as CustomerDao
+```  
 Test class:
 ```
 public class CustomerDaoTest1 extends AbstractDaoJUnitTest{
@@ -103,7 +107,7 @@ public class CustomerDaoTest1 extends AbstractDaoJUnitTest{
 ```
 Please take a look at the annotation on class CustomerCondition_fuzzyName's name property:
 ```@DirectJPQL(jpqlFragments = "{alias}.name like :name") private String name;```
-* The```@DirectJPQL``` annotation:it tells YPA that if name is not empty string or null, the like jpql fragment shall placed in the where clause to make a like query;
+* The```@DirectJPQL``` annotation: if name is not an empty string or null, the like jpql fragment shall placed in the where clause to make a like query;
 * ```{alias}```: represents the entity class;
 * ```:name```: is the named parameter;
 * The final JPQL: ```select alias from Customer as alias where alias.name like :name```.  
