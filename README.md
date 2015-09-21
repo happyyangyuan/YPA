@@ -100,4 +100,32 @@ public class CustomerDaoJUnitTest extends AbstractDaoJUnitTest{
 Let's take a look at the condition class.Properties in it have the same name to the entity's.This is the simplest way to tell YPA we want perfect match with the db.The condition query follows the principle of "null to query all" and "null to ignore".
 If you want to run the unit test,you have to provide your persistence.xml and the datasource with table 'customer'.
 
+###Example 2 : a simple fuzzy query (like query)
+Entity class :
+``` The same as above```
+Condition class:
+```
+public class CustomerCondition_fuzzyName implements Serializable {
+    private Long id;
+    @DirectJPQL(jpqlFragments = "{alias}.name like :name")
+    private String name;
+    private String phone;
+...
+}
+```
+Dao class:```The same as CustomerDao```
+Test class:
+```
+public class CustomerDaoTest1 extends AbstractDaoJUnitTest{
+
+    @Test
+    public void test(){
+        //query customers whos name contains "Yang".Please refer to class CustomerCondition_fuzzyName's name property for jpql detail.
+        List<Customer> cs = dao.query(Customer.class, new CustomerCondition_fuzzyName().setName("Yang"));
+        System.out.println(cs.size());
+    }
+    ...
+}
+```
+
 More powerfull queries will be discribed later. Coming soon...
