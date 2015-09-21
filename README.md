@@ -110,5 +110,31 @@ Please take a look at the annotation on class CustomerCondition_fuzzyName's name
 * The```@DirectJPQL``` annotation: if name is not an empty string or null, the like jpql fragment shall placed in the where clause to make a like query;
 * ```{alias}```: represents the entity class;
 * ```:name```: is the named parameter;
-* The final JPQL: ```select alias from Customer as alias where alias.name like :name```.  
+* The final JPQL: ```select alias from Customer as alias where alias.name like :name```.
+
+###Example 3 : advanced full text query (like query)
+```
+public class CustomerCondition_fuzzyAny implements Serializable {
+
+    @DirectJPQL(
+            jpqlFragments = "{alias}.code like :any " +
+                    "or {alias}.name like :any " +
+                    "or {alias}.address like :any " +
+                    "or {alias}.phone like :any"+
+                    "or {alias}.postCode like :any"
+    )
+    private String any;
+    ...
+}
+```
+Ypa will generate the JPQL:
+```
+select alias 
+from Customer as alias 
+where alias.name like :any
+or alias.address like :any
+or alias.phone like :any
+or alias.postCode like :any
+```
+
 More powerfull queries will be discribed later. Coming soon...
