@@ -102,7 +102,7 @@ If you want to run the unit test,you have to provide your persistence.xml and th
 
 ###Example 2 : a simple fuzzy query (like query)
 Entity class :
-``` The same as above```
+``` The same as above```  
 Condition class:
 ```
 public class CustomerCondition_fuzzyName implements Serializable {
@@ -113,7 +113,7 @@ public class CustomerCondition_fuzzyName implements Serializable {
 ...
 }
 ```
-Dao class:```The same as CustomerDao```
+Dao class:```The same as CustomerDao```  
 Test class:
 ```
 public class CustomerDaoTest1 extends AbstractDaoJUnitTest{
