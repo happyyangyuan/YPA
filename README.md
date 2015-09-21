@@ -19,6 +19,8 @@ With YPA, you don't need to use JPA criteria query anymore, you don't need to wr
 The condition class is highly resuable,extensiable and flexiable.
 
 ##Example usage
+###Example 1 : basic query for customers.
+Asumme we get a table "customer" in the database.Belowe is an simple dao structure:  entity + condition + dao.
 Entity class:
 ```
 @Entity
