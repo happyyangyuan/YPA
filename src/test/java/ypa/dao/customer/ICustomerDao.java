@@ -1,7 +1,7 @@
 package ypa.dao.customer;
 
 import ypa.model.customer.Customer;
-import ypa.model.customer.CustomerCondition_1;
+import ypa.model.customer.CustomerCondition;
 
 import java.util.List;
 
@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface ICustomerDao {
 
-    List<Customer> queryCustomers(CustomerCondition_1 condition_1);
+    List<Customer> queryCustomers(CustomerCondition condition_1);
 }

@@ -5,7 +5,7 @@ import org.junit.Test;
 import ypa.common.IJpaDao;
 import ypa.dao.customer.CustomerDao;
 import ypa.model.customer.Customer;
-import ypa.model.customer.CustomerCondition;
+import ypa.model.customer.CustomerCondition_fuzzyName;
 
 import java.util.List;
 
@@ -13,10 +13,14 @@ import java.util.List;
  * This is unit test for customerDao
  * Created by happyyangyuan on 15/9/18.
  */
-public class CustomerDaoJUnitTest extends AbstractDaoJUnitTest{
+public class CustomerDaoTest1 extends AbstractDaoJUnitTest{
 
-    private CustomerDao customerDao;
-
+    @Test
+    public void test(){
+        //query customers whos name contains "Yang".Please refer to class CustomerCondition_fuzzyName's name property for jpql detail.
+        List<Customer> cs = dao.query(Customer.class, new CustomerCondition_fuzzyName().setName("Yang"));
+        System.out.println(cs.size());
+    }
 
     @Override
     Class<? extends IJpaDao> getDaoImplClass() {
@@ -28,9 +32,4 @@ public class CustomerDaoJUnitTest extends AbstractDaoJUnitTest{
         return "test";
     }
 
-    @Test
-    public void test(){
-        List<Customer> cs = customerDao.query(Customer.class, new CustomerCondition().setId(1L));
-        List<Customer> cs1 = customerDao.queryCustomers(Customer.class,new CustomerCondition());
-    }
 }

@@ -20,7 +20,7 @@ The condition class is highly resuable,extensiable and flexiable.
 
 ##Example usage
 ###Example 1 : basic query for customers.
-Asumme we get a table "customer" in the database.Belowe is an simple dao structure:  entity + condition + dao.
+Asumme we get a table "customer" in the database.Belowe is an simple dao structure:  entity + condition + dao.  
 Entity class:
 ```
 @Entity
@@ -38,34 +38,13 @@ public class Customer extends Serializable{
     ...
 }
 ```
-
 Condition class:
 ```
 public class CustomerCondition implements Serializable {
     private Long id;
     private String name;
     private String phone;
-    public Long getId() {
-        return id;
-    }
-    public CustomerCondition setId(Long id) {
-        this.id = id;
-        return this;
-    }
-    public String getName() {
-        return name;
-    }
-    public CustomerCondition setName(String name) {
-        this.name = name;
-        return this;
-    }
-    public String getPhone() {
-        return phone;
-    }
-    public CustomerCondition setPhone(String phone) {
-        this.phone = phone;
-        return this;
-    }
+    //getters and setters ignored here ...
 }
 ```
 DAO class:
@@ -78,18 +57,14 @@ public class CustomerDao extends AbstractJpaDao implements ICustomerDao {
 ```
 Test:
 ```
-public class CustomerDaoJUnitTest extends AbstractDaoJUnitTest{
-
-    private ICustomerDao customerDao;
-    
+public class CustomerDaoJUnitTest ...{
+    //properties ignored ...
     @Test
     public void test(){
     	//query customers whos name equals "Joe" and phone equals "911",both conditions should be perfect matched.
         List<Customer> cs1 = customerDao.query(
             Customer.class, 
-            new CustomerCondition()
-                .setName("Joe")
-                .setPhone('911')
+            new CustomerCondition().setName("Joe").setPhone('911')
         );
         //query all the customers in the customer table.
         List<Customer> cs2 = customerDao.query(Customer.class, null);
@@ -99,5 +74,41 @@ public class CustomerDaoJUnitTest extends AbstractDaoJUnitTest{
 ```
 Let's take a look at the condition class.Properties in it have the same name to the entity's.This is the simplest way to tell YPA we want perfect match with the db.The condition query follows the principle of "null to query all" and "null to ignore".
 If you want to run the unit test,you have to provide your persistence.xml and the datasource with table 'customer'.
-
+###Example 2 : a simple fuzzy query (like query)
+Entity class :  
+```
+The same as above
+```  
+Condition class:
+```
+public class CustomerCondition_fuzzyName implements Serializable {
+    private Long id;
+    @DirectJPQL(jpqlFragments = "{alias}.name like :name")
+    private String name;
+    private String phone;
+...
+}
+```
+Dao class:  
+```
+The same as CustomerDao
+```  
+Test class:
+```
+public class CustomerDaoTest1 extends AbstractDaoJUnitTest{
+    @Test
+    public void test(){
+        //query customers whos name contains "Yang".Please refer to class CustomerCondition_fuzzyName's name property for jpql detail.
+        List<Customer> cs = dao.query(Customer.class, new CustomerCondition_fuzzyName().setName("Yang"));
+        System.out.println(cs.size());
+    }
+    ...
+}
+```
+Please take a look at the annotation on class CustomerCondition_fuzzyName's name property:
+```@DirectJPQL(jpqlFragments = "{alias}.name like :name") private String name;```
+* The```@DirectJPQL``` annotation: if name is not an empty string or null, the like jpql fragment shall placed in the where clause to make a like query;
+* ```{alias}```: represents the entity class;
+* ```:name```: is the named parameter;
+* The final JPQL: ```select alias from Customer as alias where alias.name like :name```.  
 More powerfull queries will be discribed later. Coming soon...

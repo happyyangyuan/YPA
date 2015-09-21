@@ -14,9 +14,16 @@ import javax.persistence.PersistenceContext;
  */
 public abstract class SpringPersistenceContextHelper implements IPersistenceContextHelper {
 
-
-    @PersistenceContext
+    @PersistenceContext(unitName = "please specify the persistence unit name here")
     private EntityManager em;
+
+    public EntityManager getEntityManager() {
+        return em;
+    }
+
+    public EntityManager getEntityManager(String uintName){
+        return em;
+    }
 
 
 }

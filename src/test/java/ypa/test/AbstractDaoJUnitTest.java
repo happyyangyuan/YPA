@@ -17,16 +17,16 @@ import java.lang.reflect.Field;
  */
 public abstract class AbstractDaoJUnitTest {
 
-    private IJpaDao jpaDao;
+    protected IJpaDao dao;
 
     private EntityManager em;
 
 
     @Before
     void setup() throws IllegalAccessException, InstantiationException {
-        jpaDao = getDaoImplClass().newInstance();
+        dao = getDaoImplClass().newInstance();
         em = new PersistenceContextHelperForTest().getEnttiyManager(getPersistenceUnitName());
-        setFieldValue(jpaDao, "em", em);
+        setFieldValue(dao, "em", em);
     }
 
     abstract Class<? extends IJpaDao> getDaoImplClass();
