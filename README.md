@@ -157,10 +157,11 @@ Test:
 //join query
 customerDao.queryCustomers(new CustomerCondition().setOrderNumber("20151009"));
 ```
-Please take a look at the annotation```@InnerJoin(innerJoinAliases = "order",propertyNames = "orders")```.It tell ypa to generate a jpql like this:
- ```inner join alias.orders as order```. 
-Annotation```@DirectJPQL(jpqlFragments = "order.orderNumber = :orderNumber")```will give you the jpql:
- ```where order.orderNumber = :orderNumber```. 
+Please take a look at the annotation  
+ ```@InnerJoin(innerJoinAliases = "order",propertyNames = "orders")```.  
+ It tell ypa to generate a jpql like this: ```inner join alias.orders as order```.  
+Annotation```@DirectJPQL(jpqlFragments = "order.orderNumber = :orderNumber")```will give you the jpql:  
+ ```where order.orderNumber = :orderNumber```.  
 The final jpql is :
 ```
 select alias 
