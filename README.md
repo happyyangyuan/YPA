@@ -75,13 +75,10 @@ public class CustomerDaoJUnitTest ...{
 Let's take a look at the condition class.Properties in it have the same name to the entity's.This is the simplest way to tell YPA we want perfect match with the db.The condition query follows the principle of "null to query all" and "null to ignore".
 If you want to run the unit test,you have to provide your persistence.xml and the datasource with table 'customer'.
 ###Example 2 : a simple fuzzy query (like query)
-Entity class :  
-```
-The same as above
-```  
+Entity class :  ```The same as above```  
 Condition class:
 ```
-public class CustomerCondition_fuzzyName implements Serializable {
+public class CustomerCondition implements Serializable {
     private Long id;
     @DirectJPQL(jpqlFragments = "{alias}.name like :name")
     private String name;
@@ -89,33 +86,28 @@ public class CustomerCondition_fuzzyName implements Serializable {
 ...
 }
 ```
-Dao class:  
-```
-The same as CustomerDao
-```  
+Dao class:  ```The same as CustomerDao```  
 Test class:
 ```
-public class CustomerDaoTest1 extends AbstractDaoJUnitTest{
+public class CustomerDaoTest extends AbstractDaoJUnitTest{
     @Test
     public void test(){
-        //query customers whos name contains "Yang".Please refer to class CustomerCondition_fuzzyName's name property for jpql detail.
-        List<Customer> cs = dao.query(Customer.class, new CustomerCondition_fuzzyName().setName("Yang"));
-        System.out.println(cs.size());
+        //like query, query all customers who's name like "%Yang%"
+        customerDao.queryCustomers(new CustomerCondition().setName("Yang"));
     }
     ...
 }
 ```
-Please take a look at the annotation on class CustomerCondition_fuzzyName's name property:
-```@DirectJPQL(jpqlFragments = "{alias}.name like :name") private String name;```
+Please take a look at the annotation on class CustomerCondition's name property:
+ ```@DirectJPQL(jpqlFragments = "{alias}.name like :name")private String name;```
 * The```@DirectJPQL``` annotation: if name is not an empty string or null, the like jpql fragment shall placed in the where clause to make a like query;
 * ```{alias}```: represents the entity class;
 * ```:name```: is the named parameter;
-* The final JPQL: ```select alias from Customer as alias where alias.name like :name```.
+* The final JPQL: ```select alias from Customer as alias where alias.name like :name.```
 
 ###Example 3 : process a full text query (like query)
 ```
-public class CustomerCondition_fuzzyAny implements Serializable {
-
+public class CustomerCondition implements Serializable {
     @DirectJPQL(
             jpqlFragments = "{alias}.code like :any " +
                     "or {alias}.name like :any " +
@@ -126,7 +118,6 @@ public class CustomerCondition_fuzzyAny implements Serializable {
     private String any;
     ...
 }
-
 ```
 Ypa will generate the JPQL:
 ```
@@ -140,6 +131,49 @@ or alias.postCode like :any
 
 
 ###Example 4 (inner) join
+Imagine that the customer has a one to many relation to Order entity.Now we want to get the customer who has the order with number "20151009".
 
+Condition class:
+```
+@InnerJoin(innerJoinAliases = "order",propertyNames = "orders")
+public class CustomerCondition implements Serializable {
+	@DirectJPQL(jpqlFragments = "order.orderNumber = :orderNumber")
+	private String orderNumber;
+	...
+}
+```
+Order entity class:
+```
+@Entity
+public class Order implements Serializable {
+
+    @Id
+    private String orderNumber;
+    ...
+}
+```
+Test:
+```
+//join query
+customerDao.queryCustomers(new CustomerCondition().setOrderNumber("20151009"));
+```
+Please take a look at the annotation```@InnerJoin(innerJoinAliases = "order",propertyNames = "orders")```.It tell ypa to generate a jpql like this:
+ ```inner join alias.orders as order```. 
+Annotation```@DirectJPQL(jpqlFragments = "order.orderNumber = :orderNumber")```will give you the jpql:
+ ```where order.orderNumber = :orderNumber```. 
+The final jpql is :
+```
+select alias 
+    from Customer as alias 
+    inner join alias.orders as order 
+where 
+    order.orderNumber = :orderNumber
+```
+Sometimes we want to act 2 or more join entities:
+ ```select ... from ... as alias inner join alias.orders as order,inner join alias.xxxs as xxx where xxx.yyy = ...```
+To make this happen,just give array value to @InnerJoin annotation's parameters:
+ ```@InnerJoin(innerJoinAliases = {"order","xxx"},propertyNames = {"orders","xxxs")```
+Note that join annotations should be placed before the condition class definition neither on properties nor methods,
+and jpql annotations should and only should be placed before properties rather than methods.
 
 More powerful queries will be described later. Coming soon...
