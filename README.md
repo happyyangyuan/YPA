@@ -3,12 +3,12 @@
 YPA is a simple extension of JPA. It helps you to create reusable conditional queries,to simplify your DAO code a lot. In fact you need to write only 3 classes to fulfill a powerfull DAO:
 * An entity class: entity class is always a must for JPA.
 * A condition class: it holds all the query conditions as properties in it.
-* A DAO class exends AbstractYpaDao.
+* A DAO class extends AbstractYpaDao.
 
 ##Advantages of YPA
-1. The CRUD methods in YPA DAO are strongly resuable and extensiable.
+1. The CRUD methods in YPA DAO are strongly reusable and extensible.
 2. Safe to extend without polluting the former CRUD especially the 'R'(the query).
-3. Very flexiable,by now it can meet all my needs in my business projects.
+3. Very flexible,by now it can meet all my needs in my business projects.
 4. Less code to write.Only 3 classes as mentioned above.
 
 Once upon a time I was used to the JPA criteria query, only to find that it is rather boring to write repeated query method for every different query condition.
@@ -16,11 +16,11 @@ Even worse, every time you want to extend the query method with one or more name
 polluting the former query,thus you had to add a new method to make your work done.Time and time again,your dao class became a mess.
 
 With YPA, you don't need to use JPA criteria query anymore, you don't need to write every JPQL for each query method.The only thing you need is a single reusable annotated condition class for all the queries under certain JPA entity.
-The condition class is highly resuable,extensiable and flexiable.
+The condition class is highly reusable,extensible and flexible.
 
 ##Example usage
 ###Example 1 : basic query for customers.
-Asumme we get a table "customer" in the database.Belowe is an simple dao structure:  entity + condition + dao.  
+Assume we get a table "customer" in the database.Below is an simple dao structure:  entity + condition + dao.  
 Entity class:
 ```
 @Entity
@@ -112,7 +112,7 @@ Please take a look at the annotation on class CustomerCondition_fuzzyName's name
 * ```:name```: is the named parameter;
 * The final JPQL: ```select alias from Customer as alias where alias.name like :name```.
 
-###Example 3 : advanced full text query (like query)
+###Example 3 : process a full text query (like query)
 ```
 public class CustomerCondition_fuzzyAny implements Serializable {
 
@@ -126,6 +126,7 @@ public class CustomerCondition_fuzzyAny implements Serializable {
     private String any;
     ...
 }
+
 ```
 Ypa will generate the JPQL:
 ```
@@ -137,4 +138,8 @@ or alias.phone like :any
 or alias.postCode like :any
 ```
 
-More powerfull queries will be discribed later. Coming soon...
+
+###Example 4 (inner) join
+
+
+More powerful queries will be described later. Coming soon...

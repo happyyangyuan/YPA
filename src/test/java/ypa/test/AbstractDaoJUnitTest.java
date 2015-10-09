@@ -23,7 +23,7 @@ public abstract class AbstractDaoJUnitTest {
 
 
     @Before
-    void setup() throws IllegalAccessException, InstantiationException {
+    public void setup() throws IllegalAccessException, InstantiationException {
         dao = getDaoImplClass().newInstance();
         em = new PersistenceContextHelperForTest().getEnttiyManager(getPersistenceUnitName());
         setFieldValue(dao, "em", em);
@@ -34,7 +34,7 @@ public abstract class AbstractDaoJUnitTest {
     abstract String getPersistenceUnitName();
 
     @After
-    void destroy() {
+    public void destroy() {
         em.close();
     }
 
