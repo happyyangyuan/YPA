@@ -9,7 +9,7 @@ YPA is a simple extension of JPA. It helps you to create reusable conditional qu
 
 ##Preconditions
 * YPA is for JPA developers.The basic concepts of JPA is a requirement.You can go to <a href="http://docs.oracle.com/javaee/6/tutorial/doc/bnbpz.html">here for JPA tutorial</a>.
-* <a href="http://docs.oracle.com/javaee/6/tutorial/doc/bnbtg.html">JPQL language</a>.JPQL is short for Java Persistence query language.You should be familiar with it!
+* <a href="http://docs.oracle.com/javaee/6/tutorial/doc/bnbtg.html">JPQL language</a>.JPQL is short for Java Persistence Query Language.You should be familiar with it!
 * The springframework JPA integration usage.(This is my suggested way to use YPA).
 
 ##Advantages of YPA
@@ -34,7 +34,7 @@ The condition class is highly reusable,extensible and flexible.
 
 
 ###Example 1 : basic query for customers.
-Assume we get a table "customer" in the database.Below is an simple dao structure:  entity + condition + dao.  
+Assume we get a table "customer" in the database.Below is a simple dao structure:  entity + condition + dao.  
 
 Entity class:
 ```
@@ -206,7 +206,7 @@ customerDao.queryCustomers(new CustomerCondition().setOrderNumber("20151009"));
 ```
 Please take a look at the annotation  
  ```@InnerJoin(innerJoinAliases = "order",propertyNames = "orders")```.  
- It tell ypa to generate a jpql like this: ```inner join alias.orders as order```.  
+ It tells YPA to generate a jpql like this: ```inner join alias.orders as order```.  
 Annotation```@DirectJPQL(jpqlFragments = "order.orderNumber = :orderNumber")```will give you the jpql:  
  ```where order.orderNumber = :orderNumber```.  
 The final jpql is :
@@ -221,7 +221,7 @@ Sometimes we want to add 2 or more joined entities:
  ```select ... from ... as alias inner join alias.orders as order inner join alias.xxxs as xxx where xxx.yyy = ...```  
 To make this happen,just give array value to @InnerJoin annotation's parameters:  
  ```@InnerJoin(innerJoinAliases = {"order","xxx"},propertyNames = {"orders","xxxs")``` 
-Multi-join query is illustrated below in example 5.
+Multi-join query is illustrated below in example 5.  
 Note that, the join-annotations should be placed before the condition class definition,neither on properties nor methods.
 And the jpql-annotations should and only should be placed before properties rather than methods.
 
@@ -279,7 +279,7 @@ where
     product.name = :productName
 ```
 ###Attention!  
-1. Please pay attention to the "distinct" key word.Without it,we'll get repeated customers in the query result!
+1. Please pay attention to the "distinct" key word.Without it,we'll get repeated customers in the query result!YPA will add the "distinct" keyword automatically for you.
 2. It is different with or without inner join clause in queries in JPA!  
 Because of the oop entity in JPA,without join clause we can also query and get the customers and we can get the related order entities by accessing 
 its "orders" property. It seems to be same with or without join clause.But many of the times they are different!
@@ -305,14 +305,22 @@ public class CustomerCondition implements Serializable {
     private String productName;
 }
 ```
-
+The final jpql is :
+```
+select distinct alias 
+    from Customer as alias 
+    left outer join alias.orders as order
+    left outer join order.products as product
+where 
+    product.name = :productName
+```
 
 
 
 ###When shall we use left join instead of inner join?
 * inner join omits results without joined records in database.If we don't want this happen,use left join!
-* In a Composite condition class, we get a property on joined entity.And many of the times,we want ypa to ignore the where 
-restriction on it so we set the property with a null value,but still we want those records who's joined records is empty.In such situation,left join is a must.
+* Many of the times we get property on joined entity in composite condition class.And,we want ypa to ignore the where 
+restriction on the property so we set the property with null value,but still we want those records who's joined records is empty.In such situation,left join is a must.
 * In fact,in YPA,inner join query is subset function of left join query!That is to say we can use @LeftOuterJoin instead of @InnerJoin for all cases.Please refer to 
 example 7.
 
@@ -340,6 +348,27 @@ customerDao.queryCustomers(new ypa.model.customer.advanced0.CustomerCondition().
 ```
 The above left join in fact act the same functionality of inner join which can omit those customers who has no orders and no products:  
 ````@InnerJoin(innerJoinAliases = {"order", "product"}, propertyNames = {"orders", "order.products"})````  
+The final jpql for left join:
+```
+select distinct alias from
+    Customer as alias
+    left outer join alias.orders as order
+    left outer join order.products as product
+    where
+        order is not empty and 
+        product is not empty
+```
+The final jpql for inner join:
+```
+select distinct alias from
+    Customer
+    inner join alias.orders as order
+    inner join order.products as product
+```
 
 
+
+  
+     
+       
 More powerful queries will be described later. Coming soon...
