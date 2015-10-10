@@ -10,5 +10,7 @@ import java.util.List;
  */
 public interface ICustomerDao {
 
-    List<Customer> queryCustomers(CustomerCondition condition_1);
+    List<Customer> queryCustomers(CustomerCondition condition);
+
+    List<Customer> queryCustomers(ypa.model.customer.advanced.CustomerCondition condition);
 }

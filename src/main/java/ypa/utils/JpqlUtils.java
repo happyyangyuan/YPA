@@ -151,11 +151,11 @@ public class JpqlUtils {
         String namedParam = ":" + fieldName;
         for (int i = 0; i < jpqlFragments.length; i++) {
             String fragment = jpqlFragments[i];
-            String equalNull = findEquaNamedParamPattern(fragment, namedParam);
+            String equalNull = findEqualNamedParamPattern(fragment, namedParam);
             while (equalNull != null) {
                 fragment = fragment.replaceAll(equalNull, " is null");//注意这里is null 前面的空格，很重要
                 jpqlFragments[i] = fragment;
-                equalNull = findEquaNamedParamPattern(fragment, namedParam);
+                equalNull = findEqualNamedParamPattern(fragment, namedParam);
             }
         }
         return jpqlFragments;
@@ -168,7 +168,7 @@ public class JpqlUtils {
      * @param namedParam
      * @return 如果包含形如 "= :namedParam"的子字符串，返回第一个出现的那个字符串，反之返回null
      */
-    private static String findEquaNamedParamPattern(String fragment, String namedParam) {
+    private static String findEqualNamedParamPattern(String fragment, String namedParam) {
         if (fragment.contains(namedParam) && fragment.contains("=")) {
             int equqlOperatorIndex = fragment.indexOf('=');
             int namedParameterIndex = fragment.indexOf(namedParam);
@@ -196,7 +196,8 @@ public class JpqlUtils {
         LeftOuterJoin outerJoin = condition.getClass().getAnnotation(LeftOuterJoin.class);
         if (outerJoin != null) {
             String[] outerJoinAliasArray = outerJoin.outerJoinAliases();
-            String[] propertyNameArray = outerJoin.propertyNames();
+            //String[] propertyNameArray = outerJoin.propertyNames();使支持{alias}实体通配符
+            String[] propertyNameArray = replace(outerJoin.propertyNames(),createAliasMap(alias));
             if (!ArrayUtils.isEmpty(outerJoinAliasArray)) { // 外关联的别名配置不为空
                 for (int i = 0; i < outerJoinAliasArray.length; i++) {
                     String outerJoinAlias = outerJoinAliasArray[i], propertyName = propertyNameArray[i];
@@ -225,7 +226,8 @@ public class JpqlUtils {
                 InnerJoin.class);
         if (innerJoin != null) {
             String[] innerJoinAliasArray = innerJoin.innerJoinAliases();
-            String[] propertyNameArray = innerJoin.propertyNames();
+            //String[] propertyNameArray = innerJoin.propertyNames();使支持{alias}实体通配符
+            String[] propertyNameArray = replace(innerJoin.propertyNames(),createAliasMap(alias));
             if (!ArrayUtils.isEmpty(innerJoinAliasArray)) { // 内关联的别名配置不为空
                 for (int i = 0; i < innerJoinAliasArray.length; i++) {
                     String innerJoinAlias = innerJoinAliasArray[i], propertyName = propertyNameArray[i];
@@ -268,6 +270,12 @@ public class JpqlUtils {
      */
     public static String replace(String fragmet,Map<String,Object> map){
         return replace(new String[]{fragmet}, map)[0];
+    }
+
+    private static Map<String,Object> createAliasMap(String alias){
+        Map<String,Object> aliasMap = new HashMap<String,Object>();
+        aliasMap.put("{alias}",alias);
+        return aliasMap;
     }
 
     /**

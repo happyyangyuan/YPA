@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ypa.model.exception.ExceptionCode;
 import ypa.model.exception.YpaRuntimeException;
-import ypa.persistencecontext.IPersistenceContextHelper;
 import ypa.utils.JpqlUtils;
 
 import javax.persistence.EntityManager;
@@ -14,7 +13,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static ypa.utils.JpqlUtils.setParameters;
 
@@ -26,7 +24,7 @@ public abstract class AbstractJpaDao implements IJpaDao {
     protected Logger log = LoggerFactory.getLogger(getClass());
 
     /**
-     * Due to dao beans are always defined as singleton in bean container and EntityManager is not thread safe, you may worry about that.
+     * Due to dao beans are always defined as singleton in bean container. EntityManager is not thread safe, you may worry about that.
      * But don't worry, the entity manager injected here is actually not the real JPA entity manager but a delegate.The spring
      * framework can assure you that separate entity managers used in separate spring transactions.
      * Here is the spring doc describes the fact:"Although EntityManagerFactory instances are thread-safe, EntityManager instances are not. The injected JPA EntityManager behaves like an EntityManager fetched from an application server’s JNDI environment, as defined by the JPA specification. It delegates all calls to the current transactional EntityManager, if any; otherwise, it falls back to a newly created EntityManager per operation, in effect making its usage thread-safe."
@@ -127,7 +125,7 @@ public abstract class AbstractJpaDao implements IJpaDao {
     }
 
     private Query getQuery(Class<?> clazz, Object condition) {
-        String jpql = getBasicQueryJqpl(clazz, condition, JpqlUtils.SELECT_ALIAS_FROM);
+        String jpql = getBasicQueryJpql(clazz, condition, JpqlUtils.SELECT_ALIAS_FROM);
         Query query = em.createQuery(jpql, clazz);
         setParameters(query, condition);
         return query;
@@ -140,10 +138,10 @@ public abstract class AbstractJpaDao implements IJpaDao {
     }
 
     private String getQueryCountJpql(Class<?> clazz, Object condition) {
-        return getBasicQueryJqpl(clazz, condition, JpqlUtils.SELECT_COUNT_DISTINCT_FROM);
+        return getBasicQueryJpql(clazz, condition, JpqlUtils.SELECT_COUNT_DISTINCT_FROM);
     }
 
-    private String getBasicQueryJqpl(Class<?> clazz, Object condition, String selectWhat) {
+    private String getBasicQueryJpql(Class<?> clazz, Object condition, String selectWhat) {
         String jpql = selectWhat + " " + clazz.getName() + " alias "
                 + JpqlUtils.getOuterJoinClause(condition, "alias") + JpqlUtils.getInnerJoinClause(condition, "alias")
                 + " where 1 = 1 ";
@@ -167,7 +165,7 @@ public abstract class AbstractJpaDao implements IJpaDao {
      * @return
      */
     private Query getQueryWithOrderBy(Class<?> clazz, Object condition, String orderByColumnName, String descOrAsc, Integer maxRecordCount, int firstResult) {
-        String jpql = getBasicQueryJqpl(clazz, condition, JpqlUtils.SELECT_ALIAS_FROM);
+        String jpql = getBasicQueryJpql(clazz, condition, JpqlUtils.SELECT_ALIAS_FROM);
         jpql += " order by alias." + orderByColumnName + " " + descOrAsc;
         Query query = em.createQuery(jpql, clazz);
         setParameters(query, condition);
@@ -181,7 +179,7 @@ public abstract class AbstractJpaDao implements IJpaDao {
     }
 
     private Query getPagingQuery(Class<?> clazz, Object condition, Integer maxRecordCount, int firstResult) {
-        String jpql = getBasicQueryJqpl(clazz, condition, JpqlUtils.SELECT_ALIAS_FROM);
+        String jpql = getBasicQueryJpql(clazz, condition, JpqlUtils.SELECT_ALIAS_FROM);
         Query query = em.createQuery(jpql, clazz);
         setParameters(query, condition);
         if (maxRecordCount != null && maxRecordCount > 0) {

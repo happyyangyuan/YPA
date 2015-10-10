@@ -27,7 +27,7 @@ public abstract class AbstractMultiDataSourceJpaDao implements IMultiDataSourceJ
     }
 
     /**
-     * It is strongly suggected that you impement this method and return a SpringPersistenceContextHelper
+     * It is strongly suggested that you implement this method and return a SpringPersistenceContextHelper
      * @return IPersistenceContextHelper implementation
      */
     protected abstract IPersistenceContextHelper getPersistenceContextHelper();
@@ -183,7 +183,7 @@ public abstract class AbstractMultiDataSourceJpaDao implements IMultiDataSourceJ
      * @return JPA查询
      */
     private Query getQuery(String unitName, Class<?> clazz, Object condition) {
-        String jpql = getBasicQueryJqpl(clazz, condition, JpqlUtils.SELECT_ALIAS_FROM);
+        String jpql = getBasicQueryJpql(clazz, condition, JpqlUtils.SELECT_ALIAS_FROM);
         Query query = getEntityManager(unitName).createQuery(jpql, clazz);
         setParameters(query, condition);
         return query;
@@ -203,10 +203,10 @@ public abstract class AbstractMultiDataSourceJpaDao implements IMultiDataSourceJ
     }
 
     private String getQueryCountJpql(Class<?> clazz, Object condition) {
-        return getBasicQueryJqpl(clazz, condition, JpqlUtils.SELECT_COUNT_DISTINCT_FROM);
+        return getBasicQueryJpql(clazz, condition, JpqlUtils.SELECT_COUNT_DISTINCT_FROM);
     }
 
-    private String getBasicQueryJqpl(Class<?> clazz, Object condition, String selectWhat) {
+    private String getBasicQueryJpql(Class<?> clazz, Object condition, String selectWhat) {
         String jpql = selectWhat + " " + clazz.getName() + " alias "
                 + JpqlUtils.getOuterJoinClause(condition, "alias") + JpqlUtils.getInnerJoinClause(condition, "alias")
                 + " where 1 = 1 ";
@@ -231,7 +231,7 @@ public abstract class AbstractMultiDataSourceJpaDao implements IMultiDataSourceJ
      * @return
      */
     private Query getQueryWithOrderBy(String unitName, Class<?> clazz, Object condition, String orderByColumnName, String descOrAsc, Integer maxRecordCount, int firstResult) {
-        String jpql = getBasicQueryJqpl(clazz, condition, JpqlUtils.SELECT_ALIAS_FROM);
+        String jpql = getBasicQueryJpql(clazz, condition, JpqlUtils.SELECT_ALIAS_FROM);
         jpql += " order by alias." + orderByColumnName + " " + descOrAsc;
         Query query = getEntityManager(unitName).createQuery(jpql, clazz);
         setParameters(query, condition);
@@ -245,7 +245,7 @@ public abstract class AbstractMultiDataSourceJpaDao implements IMultiDataSourceJ
     }
 
     private Query getPagingQuery(String unitName, Class<?> clazz, Object condition, Integer maxRecordCount, int firstResult) {
-        String jpql = getBasicQueryJqpl(clazz, condition, JpqlUtils.SELECT_ALIAS_FROM);
+        String jpql = getBasicQueryJpql(clazz, condition, JpqlUtils.SELECT_ALIAS_FROM);
         Query query = getEntityManager(unitName).createQuery(jpql, clazz);
         setParameters(query, condition);
         if (maxRecordCount != null && maxRecordCount > 0) {

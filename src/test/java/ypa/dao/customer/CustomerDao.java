@@ -12,6 +12,10 @@ import java.util.List;
  */
 public class CustomerDao extends AbstractJpaDao implements ICustomerDao {
     public List<Customer> queryCustomers(CustomerCondition condition_1) {
-        return query(Customer.class,condition_1);
+        return query(Customer.class, condition_1);
+    }
+
+    public List<Customer> queryCustomers(ypa.model.customer.advanced.CustomerCondition condition) {
+        return query(Customer.class, condition);
     }
 }

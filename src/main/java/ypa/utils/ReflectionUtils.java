@@ -162,4 +162,20 @@ public class ReflectionUtils {
         }
     }
 
+    /**
+     * This method can set the private filed value
+     * @param obj object to operate
+     * @param fieldName the filed name to set value to
+     * @param value value
+     */
+    public static  void setFieldValue(Object obj, String fieldName, Object value) {
+        Field field = org.springframework.util.ReflectionUtils.findField(obj.getClass(), fieldName);
+        org.springframework.util.ReflectionUtils.makeAccessible(field);
+        try {
+            field.set(obj, value);
+        } catch (IllegalAccessException e) {
+            throw new YpaRuntimeException(ExceptionCode.REFLECTION_ERR, field, e);
+        }
+    }
+
 }

@@ -1,25 +1,22 @@
 package ypa.model.customer;
 
+import ypa.model.order.Order;
+
 import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Entity
 public class Customer {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+	@Id
 	private String code;
 
 	private String name;
 
 	private String phone;
 
-	/**
-	 * 中文地址
-	 */
 	private String address;
 
 	private String postCode;
@@ -29,14 +26,9 @@ public class Customer {
 	private String contactMan;
 
 	private String email;
-	/**
-	 * 认证码
-	 */
-	private String authenticationNo;
-	/**
-	 * 营业执照
-	 */
-	private String icbLicensePath;
+
+	@OneToMany
+	private List<Order> orders;
 
 	public String getCode() {
 		return code;
@@ -102,20 +94,11 @@ public class Customer {
 		this.email = email;
 	}
 
-	public String getAuthenticationNo() {
-		return authenticationNo;
+	public List<Order> getOrders() {
+		return orders;
 	}
 
-	public void setAuthenticationNo(String authenticationNo) {
-		this.authenticationNo = authenticationNo;
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
 	}
-
-	public String getIcbLicensePath() {
-		return icbLicensePath;
-	}
-
-	public void setIcbLicensePath(String icbLicensePath) {
-		this.icbLicensePath = icbLicensePath;
-	}
-
 }

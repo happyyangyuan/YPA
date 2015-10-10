@@ -170,11 +170,43 @@ select alias
 where 
     order.orderNumber = :orderNumber
 ```
-Sometimes we want to act 2 or more join entities:
- ```select ... from ... as alias inner join alias.orders as order,inner join alias.xxxs as xxx where xxx.yyy = ...```
-To make this happen,just give array value to @InnerJoin annotation's parameters:
- ```@InnerJoin(innerJoinAliases = {"order","xxx"},propertyNames = {"orders","xxxs")```
-Note that join annotations should be placed before the condition class definition neither on properties nor methods,
-and jpql annotations should and only should be placed before properties rather than methods.
+Sometimes we want to add 2 or more joined entities:  
+ ```select ... from ... as alias inner join alias.orders as order inner join alias.xxxs as xxx where xxx.yyy = ...```  
+To make this happen,just give array value to @InnerJoin annotation's parameters:  
+ ```@InnerJoin(innerJoinAliases = {"order","xxx"},propertyNames = {"orders","xxxs")``` 
+Multi-join query is illustrated below in example 5.
+Note that, the join-annotations should be placed before the condition class definition,neither on properties nor methods.
+And the jpql-annotations should and only should be placed before properties rather than methods.
+
+###Example 5 multi-join
+As mentioned above,we do sometimes need multi-join!
+Imagine each of our customer has many orders,and each order has many products.Now we want to query the customers who has ordered product named "doll".How should we process the query with that 3 table relationship?
+Check the annotated condition below:
+```
+//multi-join condition
+@InnerJoin(innerJoinAliases = {"order", "product"}, propertyNames = {"orders", "order.products"})
+//the propertyName "orders" is equal to "{alias}.orders" and "alias.orders",
+//"{alias}" and "alias" represents the Customer entity as mentioned above,and if you omit it,ypa will add it for you.
+//Property name "order.products" depends on alias "order",it should be placed after "orders".
+public class CustomerCondition implements Serializable {
+    ...
+    @DirectJPQL(jpqlFragments = "product.name = :productName")
+    private String productName;
+}
+```
+Product entity class:
+```
+@Entity
+public class Product implements Serializable {
+    @Id
+    private String name;
+    ...
+}
+```
+Test:
+```
+//multi-join query
+customerDao.queryCustomers(new ypa.model.customer.advanced.CustomerCondition().setProductName("doll"));
+```
 
 More powerful queries will be described later. Coming soon...
