@@ -28,6 +28,9 @@ public class CustomerDaoTest extends AbstractDaoJUnitTest {
         //multi-join query
         customerDao.queryCustomers(new ypa.model.customer.advanced.CustomerCondition().setProductName("doll"));
 
+        //left join instead of inner join
+        customerDao.queryCustomers(new ypa.model.customer.advanced0.CustomerCondition().setWithOrders(true).setWithProducts(true));
+
     }
 
 

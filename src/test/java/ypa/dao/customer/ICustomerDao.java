@@ -13,4 +13,6 @@ public interface ICustomerDao {
     List<Customer> queryCustomers(CustomerCondition condition);
 
     List<Customer> queryCustomers(ypa.model.customer.advanced.CustomerCondition condition);
+
+    List<Customer> queryCustomers(ypa.model.customer.advanced0.CustomerCondition condition);
 }

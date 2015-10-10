@@ -18,4 +18,8 @@ public class CustomerDao extends AbstractJpaDao implements ICustomerDao {
     public List<Customer> queryCustomers(ypa.model.customer.advanced.CustomerCondition condition) {
         return query(Customer.class, condition);
     }
+
+    public List<Customer> queryCustomers(ypa.model.customer.advanced0.CustomerCondition condition) {
+        return query(Customer.class,condition);
+    }
 }
