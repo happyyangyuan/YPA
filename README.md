@@ -372,4 +372,4 @@ select distinct alias from
      
        
 ~~More powerful queries will be described later. Coming soon...~~
-Honestly, I am prefering mybatis more than JPA now. Choose your favourate frame as your wish.
+Honestly, I am prefering mybatis more than JPA now. Choose your favourate framework as your wish.
