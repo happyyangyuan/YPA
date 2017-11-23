@@ -1,18 +1,18 @@
 # YPA
 
 
-##What is YPA?
-YPA is a simple extension of JPA. It helps you to create reusable conditional queries,to simplify your DAO code. With the flollowing 3 java classes you can fulfill a powerfull DAO:
+## What is YPA?
+YPA is a simple extension of JPA. It helps you to create reusable conditional queries to simplify your DAO code. With the flollowing 3 java classes you can fulfill a powerfull DAO:
 * An entity class: entity class is always a must for JPA.
 * A condition class: it holds all the query conditions as properties in it.
 * A DAO class extends AbstractYpaDao.
 
-##Preconditions
+## Preconditions
 * YPA is for JPA developers.The basic concepts of JPA is a requirement.You can go to <a href="http://docs.oracle.com/javaee/6/tutorial/doc/bnbpz.html">here for JPA tutorial</a>.
 * <a href="http://docs.oracle.com/javaee/6/tutorial/doc/bnbtg.html">JPQL language</a>.JPQL is short for Java Persistence Query Language.You should be familiar with it!
 * The springframework JPA integration usage.(This is my suggested way to use YPA).
 
-##Advantages of YPA
+## Advantages of YPA
 1. The CRUD methods in YPA DAO are strongly reusable and extensible.
 2. Safe to extend without polluting the former CRUD especially the 'R'(the query).
 3. Very flexible,by now it can meet all my needs in my business projects.
@@ -30,16 +30,16 @@ The condition class is highly reusable,extensible and flexible.
 
 
 
-##Example usage
+## Example usage
 
 
-###Example 1 : basic query for customers.
+### Example 1 : basic query for customers.
 Assume we get a table "customer" in the database.Below is a simple dao structure:  entity + condition + dao.  
 
 Entity class:
 ```
 @Entity
-public class Customer extends Serializable{
+public class Customer implements Serializable{
 	@Id
 	private Long id;
 	private String code;
@@ -95,7 +95,7 @@ If you want to run the unit test,you have to provide your persistence.xml and th
 
 
 
-###Example 2 : a simple fuzzy query (like query)
+### Example 2 : a simple fuzzy query (like query)
 
 Entity class :  ```The same as above```  
 
@@ -137,7 +137,7 @@ Please take a look at the annotation on class CustomerCondition's name property:
 
 
 
-###Example 3 : process a full text query (like query)
+### Example 3 : process a full text query (like query)
 
 ```
 public class CustomerCondition implements Serializable {
@@ -167,12 +167,12 @@ or alias.postCode like :any
 
 
 
-###Example 4 (inner) join
+### Example 4 (inner) join
 Imagine that the customer has a one to many relation to Order entity.Now we want to get the customer who has the order with number "20151009".
 
 Condition class:
 ```
-@InnerJoin(innerJoinAliases = "order",propertyNames = "orders")
+@InnerJoin(innerJoinAliases = "order", propertyNames = "orders")
 public class CustomerCondition implements Serializable {
 	@DirectJPQL(jpqlFragments = "order.orderNumber = :orderNumber")
 	private String orderNumber;
@@ -229,7 +229,7 @@ And the jpql-annotations should and only should be placed before properties rath
 
 
 
-###Example 5 multi-join
+### Example 5 multi-join
 As mentioned above,we do sometimes need multi-join!
 Imagine each of our customer has many orders,and each order has many products.Now we want to query the customers who has ordered product named "doll".How should we process the query with that 3 table relationship?
 Check the annotated condition below:
@@ -278,8 +278,8 @@ select distinct alias
 where 
     product.name = :productName
 ```
-###Attention!  
-1. Please pay attention to the "distinct" key word.Without it,we'll get repeated customers in the query result!YPA will add the "distinct" keyword automatically for you.
+### Attention!  
+1. Please pay attention to the "distinct" key word. Without it, we'll get repeated customers in the query result! YPA will add the "distinct" keyword automatically for you.
 2. It is different with or without inner join clause in queries in JPA!  
 Because of the oop entity in JPA,without join clause we can also query and get the customers and we can get the related order entities by accessing 
 its "orders" property. It seems to be same with or without join clause.But many of the times they are different!
@@ -293,7 +293,7 @@ Sometimes we do not merely need inner join but also outer join!(left/right join 
 
 
 
-###Example 6 left(outer)join
+### Example 6 left(outer)join
 First you should know that in JPA with or without inner join clause the result may be different,but with or without outer join the result is same!
 Just use @LeftOuterJoin annotation:
 ```
@@ -317,7 +317,7 @@ where
 
 
 
-###When shall we use left join instead of inner join?
+### When shall we use left join instead of inner join?
 * inner join omits results without joined records in database.If we don't want this happen,use left join!
 * Many of the times we get property on joined entity in composite condition class.And,we want ypa to ignore the where 
 restriction on the property so we set the property with null value,but still we want those records who's joined records is empty.In such situation,left join is a must.
@@ -327,7 +327,7 @@ example 7.
 
 
 
-###Example 7 boolean property in query condition
+### Example 7 boolean property in query condition
 
 
 ```
